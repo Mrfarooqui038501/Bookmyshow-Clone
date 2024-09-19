@@ -1,8 +1,9 @@
 const express = require("express");
 
 const User = require("../models/userModel");
-
 const jwt = require("jsonwebtoken");
+const auth = require("../middlewares/authMiddleware")
+
 
 // register a user
 
@@ -59,6 +60,13 @@ userRouter.post("/login", async (req, res) => {
   } catch (err) {
     res.status(400).send({ message: err.message });
   }
+});
+
+userRouter.get("/get-current-user", auth, async (req,res) => {
+  // console.log(req.url, req.method);
+  // console.log(req.headers["authorization"]);
+  const user = await User.findById(req.body.userId).select("-password")
+  res.send({success: true, message: "You are authentcated", data: user});
 });
 
 module.exports = userRouter;

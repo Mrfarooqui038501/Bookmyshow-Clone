@@ -1,23 +1,37 @@
 const express = require("express");
-const cors=require ('cors')
+const cors=require("cors")
+
 const app = express();
 
-require("dotenv").config(); // load env variables into process.env 
+require("dotenv").config(); // load env variables into process.env
 
 /**
- * to read the env files we have install a package dotenv
- * it read the .env files and populates the process.env object
+ * to read from env file, we use a package called
+ * dotenv
+ * what it does is, it reads the .env file and populates the process.env object
  */
 
-const connectDB = require("./config/db")
-
-// routes
-const userRouter  = require("./routes/userRoutes")
-app.use(cors());
-app.use(express.json());
-app.use("/api/users", userRouter)
+const connectDB = require("./config/db");
+/**
+ * diff between import and require
+ * import is ES6 syntax
+ * require is commonJS syntax
+ * require can be conditional. import cannot be conditional
+ * import happens at the beginning of the file
+ * require can be used anywhere in the file
+ * require can be conditionally loaded
+ */
 
 connectDB();
+
+/**
+ * routes
+ */
+const userRouter = require("./routes/userRoutes");
+app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(express.json());
+app.use("/api/users", userRouter);
+
 app.listen(5000, () => {
-    console.log("Server is on port 5000")
-})
+  console.log("Server started at port 5000");
+});
