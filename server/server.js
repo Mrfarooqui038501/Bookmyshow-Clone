@@ -28,9 +28,11 @@ connectDB();
  * routes
  */
 const userRouter = require("./routes/userRoutes");
-app.use(cors({ origin: 'http://localhost:3000' }));
+const movieRouter = require("./routes/movieroutes");
+
 app.use(express.json());
 app.use("/api/users", userRouter);
+app.use("/api/movies", movieRouter);;
 
 app.listen(5000, () => {
   console.log("Server started at port 5000");
